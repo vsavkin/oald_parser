@@ -1,0 +1,5 @@
+require_relative 'oald_parser/facade'
+require_relative 'oald_parser/formatter'
+require_relative 'oald_parser/oald_parser_exception'
+require_relative 'oald_parser/page_downloader'
+require_relative 'oald_parser/page_parser'
