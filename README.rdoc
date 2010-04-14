@@ -1,0 +1,40 @@
+= Oald Parser
+
+== Description
+
+OaldParser is a simple gem for getting descriptions for words.
+It uses online Oxford Advanced Learner's Dictionary for this purpose.
+
+== Installation
+
+    gem install oald_parser
+
+== Usage
+
+The whole gem is hidden by a facade class that should be used
+for getting all the information.
+The first way to create this facade is:
+
+    facade = OaldParser::Facade.create_facade
+
+After that it can be used in such a way:
+
+    text = facade.describe(word: 'dog') OR
+    text = facade.describe(str: 'a dog [CN]')
+
+'Describe' method returns a plain text describing word a string. 
+
+== Customizing
+
+If you want to customize facade look at the 'create_facade' method:
+
+    def self.create_facade
+      downloader = PageDownloader.new('http://www.oup.com/oald-bin/web_getald7index1a.pl')
+      parser = PageParser.new
+      formatter = Formatter.new(lines: 15)
+      extractor = WordExtractor.new
+      Facade.new(downloader, parser, formatter, extractor)
+    end
+
+As you can see it is not a problem to use your own parser or formatter for working
+with OALD.

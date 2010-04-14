@@ -28,7 +28,7 @@ describe OaldParser::Formatter do
   end
 
   it "should format valid input and do stripping" do
-    @formatter.format(INPUT).should == 'link some text\nanother text'
+    @formatter.format(INPUT).should == "link some text\nanother text"
   end
 
   it "should skip image tags" do
@@ -36,10 +36,10 @@ describe OaldParser::Formatter do
   end
 
   it "should return the first x lines" do
-    @formatter.format(INPUT_WITH_MANY_LINES).should == 'one\ntwo\nthree'
+    @formatter.format(INPUT_WITH_MANY_LINES).should == "one\ntwo\nthree"
   end
 
   it "should process input without root" do
-    @formatter.format(INPUT_WITHOUT_ROOT).should == 'one\ntwo'
+    @formatter.format(INPUT_WITHOUT_ROOT).should == "one\ntwo"
   end
 end

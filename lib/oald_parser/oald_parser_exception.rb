@@ -1,9 +1,9 @@
 module OaldParser
   class OaldParserException < Exception
-    NET = :net
-    PARSER = :parser
-    FORMATTER = :formatter
-    INTERNAL = :internal
+    NET = 'net'
+    PARSER = 'parser'
+    FORMATTER = 'formatter'
+    INTERNAL = 'internal'
 
     attr_reader :code
 
