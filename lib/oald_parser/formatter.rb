@@ -7,7 +7,7 @@ module OaldParser
     end
 
     def format(content)
-      lined_content = content.gsub(/<\s*br\s*\/*>/, "\n")
+      lined_content = content.gsub(/<\/\s*div\s*\/*>/, "\n")
       text = Nokogiri::HTML(lined_content).text
       first_lines = first_lines(text, @options[:lines])
       first_lines.strip

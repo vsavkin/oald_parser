@@ -8,9 +8,9 @@ module OaldParser
     end
 
     def download(word)
-      url = URI.parse(@url)
-      Net::HTTP.get(url + "?search_word=#{word}")
-    rescue
+      url = URI.parse("#{@url}/#{word}")
+      Net::HTTP.get(url)
+    rescue Exception => e
       nil
     end
   end

@@ -10,12 +10,12 @@ module OaldParser
 
     private
     def extract_part_without_header(page)
-      parts = page.split(/<\/select>\s*<\/form>/i)
+      parts = page.split('<!-- End of DIV top-container-->')
       parts.size == 2 ? parts[1] : nil
     end
 
     def extract_part_without_footer(page)
-      parts = page.split(/<div\s+class='oald'>/i)
+      parts = page.split('<!-- End of DIV entry-->')
       parts.size == 2 ? parts[0] : nil
     end
   end
