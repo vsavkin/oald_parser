@@ -5,12 +5,16 @@ require_relative 'oald_parser/page_downloader'
 require_relative 'oald_parser/page_parser'
 
 
-include OaldParser
+#include OaldParser
+#
+#downloader = PageDownloader.new("http://www.oxfordadvancedlearnersdictionary.com/dictionary")
+#page = downloader.download("prevent")
+#parser = PageParser.new
+#parsed = parser.parse(page)
+#formatter = Formatter.new(items: 15)
+#puts formatter.format(parsed)
 
-downloader = PageDownloader.new("http://www.oxfordadvancedlearnersdictionary.com/dictionary")
-page = downloader.download("dog")
-parser = PageParser.new
-parsed = parser.parse(page)
-puts parsed
-formatter = Formatter.new(lines: 15)
-puts formatter.format(parsed)    
+#class=sd-g block
+#class=n-g new line
+#class=x-g new list item
+#class=xr-g delete

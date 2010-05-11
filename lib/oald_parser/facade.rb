@@ -14,9 +14,9 @@ module OaldParser
     end
 
     def self.create_facade
-      downloader = PageDownloader.new('http://www.oup.com/oald-bin/web_getald7index1a.pl')
+      downloader = PageDownloader.new('http://www.oxfordadvancedlearnersdictionary.com/dictionary')
       parser = PageParser.new
-      formatter = Formatter.new(lines: 15)
+      formatter = Formatter.new(items: 5)
       extractor = WordExtractor.new
       Facade.new(downloader, parser, formatter, extractor)
     end

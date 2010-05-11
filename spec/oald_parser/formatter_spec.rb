@@ -3,43 +3,31 @@ require_relative '../../lib/oald_parser/formatter'
 
 describe OaldParser::Formatter do
 
-  INPUT = '
-    <p><a href="boo">link</a> some text<br>another text</p>
-  '
-
-  INPUT_WITH_IMAGE = '
-    <p><img src="img">some text</p>
-  '
-
-  INPUT_WITH_MANY_LINES = '
-    <p>one<br>two<br>three<br>four</p>
-  '
-
-  INPUT_WITH_DIFFERENT_BRS = '
-    <p>one<br />two< br >three</p>
-  '
-
-  INPUT_WITHOUT_ROOT = '
-    one<br>two
-  '
-
   before(:each) do
-    @formatter = OaldParser::Formatter.new(lines:3)
+    @item1 = OpenStruct.new(text: 'item1', examples: ['one', 'two'])
+    @item2 = OpenStruct.new(text: 'item2', examples: ['one'])
+    @item3 = OpenStruct.new(text: 'item', examples: [])
+    @block = OpenStruct.new(text: 'block1', items: [@item1, @item2])
+    @formatter = OaldParser::Formatter.new(items:3)
   end
 
-  it "should format valid input and do stripping" do
-    @formatter.format(INPUT).should == "link some text\nanother text"
+  it "should format page without blocks and do stripping" do
+    page = OpenStruct.new(items: [@item1, @item2], blocks: [])
+    @formatter.format(page).should == "item1\n+ one\n+ two\n\nitem2\n+ one"
   end
 
-  it "should skip image tags" do
-    @formatter.format(INPUT_WITH_IMAGE).should == 'some text'
+  it "should format page with blocks and do stripping" do
+    page = OpenStruct.new(items: [], blocks: [@block])
+    @formatter.format(page).should == "BLOCK1\n--------------------\nitem1\n+ one\n+ two\n\nitem2\n+ one"
   end
 
-  it "should return the first x lines" do
-    @formatter.format(INPUT_WITH_MANY_LINES).should == "one\ntwo\nthree"
+  it "should not add too many new lines if there are no examples" do
+    page = OpenStruct.new(items: [@item3, @item3], blocks: [])
+    @formatter.format(page).should == "item\n\nitem"
   end
 
-  it "should process input without root" do
-    @formatter.format(INPUT_WITHOUT_ROOT).should == "one\ntwo"
+  it "should format empty page" do
+    page = OpenStruct.new(items: [], blocks: [])
+    @formatter.format(page).should == ''
   end
 end

@@ -3,12 +3,46 @@ require_relative '../../lib/oald_parser/page_parser'
 
 describe OaldParser::PageParser do
 
-  VALID_INPUT = "
+  VALID_INPUT_WITH_BLOCKS = "
     <html><body>
-    <form></form>
-    <form><select> </selECT>  </FORM>
-    <div>content<p>content</p></div>
-    <DIV   class='oald'>footer</div>                        
+    <dIv class='sd-g'>
+      <h3 class='sd'>block1</h3>
+      <span class='n-g'>title1
+        <span class='x-g'>example1</span>
+        <span class='x-g'>example2</span>
+      </span>
+
+      <span class='n-g'>title2
+        <span class='x-g'>example1</span>
+      </span>
+    </div>
+
+    <div class='sd-g'>
+      <h3 class='sd'>block2</h3>
+      <span class='n-g'>title<span class='number'>1</span>
+        <span class='x-g'>example<span class='number'>11</span></span>
+        <span class='x-g'>example<span class='number'>22</span></span>
+      </span>
+    </div>
+    </body></html>
+  "
+
+  VALID_INPUT_WITHOUT_BLOCKS = "
+    <html><body>
+      <span class='n-g'>title1
+        <span class='x-g'>example1</span>
+        <span class='x-g'>example2</span>
+      </span>
+    </body></html>
+  "
+
+  DEFINITION_WITHOUT_BLOCKS = "
+    <html><body>
+      <div class='h-g'>
+        <div class='def_block'>title</div>
+        <span class='x-g'>example1</span>
+        <span class='x-g'>example2</span>
+      </div>
     </body></html>
   "
 
@@ -23,11 +57,38 @@ describe OaldParser::PageParser do
     @parser = OaldParser::PageParser.new 
   end
 
-  it "should extract the part of html with word description" do
-    @parser.parse(VALID_INPUT).should == "<div>content<p>content</p></div>"
+  it "should process the page with blocks" do
+    res = @parser.parse(VALID_INPUT_WITH_BLOCKS)
+    res.blocks.size.should == 2
+    res.items.should be_empty
+    res.blocks[1].text.should == 'block2'
+    res.blocks[1].items.size.should == 1
+    res.blocks[1].items[0].text.should == 'title1'
+    res.blocks[1].items[0].examples[0].should == 'example11'
+    res.blocks[1].items[0].examples[1].should == 'example22'
+  end
+
+  it "should process the page with items" do
+    res = @parser.parse(VALID_INPUT_WITHOUT_BLOCKS)
+    res.blocks.should be_empty
+    res.items.size.should == 1
+    res.items[0].text.should == 'title1'
+    res.items[0].examples[0].should == 'example1'
+    res.items[0].examples[1].should == 'example2'
+  end
+
+  it "should process the page with definition" do
+    res = @parser.parse(DEFINITION_WITHOUT_BLOCKS)
+    res.blocks.should be_empty
+    res.items.size.should == 1
+    res.items[0].text.should == 'title'
+    res.items[0].examples[0].should == 'example1'
+    res.items[0].examples[1].should == 'example2'
   end
 
   it "should return nil if can't parse the page" do
-    @parser.parse(INVALID_INPUT).should be_nil
+    res = @parser.parse(INVALID_INPUT)
+    res.blocks.should be_empty
+    res.items.should be_empty
   end
 end
