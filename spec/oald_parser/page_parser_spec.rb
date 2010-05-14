@@ -46,6 +46,18 @@ describe OaldParser::PageParser do
     </body></html>
   "
 
+  SECOND_SYNTAX_OF_BLOCKS = "
+    <html><body>
+      <div class='h-g'>
+        block
+        <span class='n-g'>title<span class='number'></span>
+          <span class='x-g'>example<span class='number'>11</span></span>
+          <span class='x-g'>example<span class='number'>22</span></span>
+        </span>
+      </div>
+    </body></html>
+  "
+
   INVALID_INPUT = "
     <html><body>
     <form></form>
@@ -60,7 +72,6 @@ describe OaldParser::PageParser do
   it "should process the page with blocks" do
     res = @parser.parse(VALID_INPUT_WITH_BLOCKS)
     res.blocks.size.should == 2
-    res.items.should be_empty
     res.blocks[1].text.should == 'block2'
     res.blocks[1].items.size.should == 1
     res.blocks[1].items[0].text.should == 'title1'
@@ -68,27 +79,36 @@ describe OaldParser::PageParser do
     res.blocks[1].items[0].examples[1].should == 'example22'
   end
 
+  it "should process the page with blocks with the second format" do
+    res = @parser.parse(SECOND_SYNTAX_OF_BLOCKS)
+    res.blocks.size.should == 1
+    res.blocks[0].text.should == ''
+    res.blocks[0].items.size.should == 1
+    res.blocks[0].items[0].text.should == 'title'
+    res.blocks[0].items[0].examples[0].should == 'example11'
+    res.blocks[0].items[0].examples[1].should == 'example22'
+  end
+
   it "should process the page with items" do
     res = @parser.parse(VALID_INPUT_WITHOUT_BLOCKS)
-    res.blocks.should be_empty
-    res.items.size.should == 1
-    res.items[0].text.should == 'title1'
-    res.items[0].examples[0].should == 'example1'
-    res.items[0].examples[1].should == 'example2'
+    res.blocks.size.should == 1
+    res.blocks[0].items.size.should == 1
+    res.blocks[0].items[0].text.should == 'title1'
+    res.blocks[0].items[0].examples[0].should == 'example1'
+    res.blocks[0].items[0].examples[1].should == 'example2'
   end
 
   it "should process the page with definition" do
     res = @parser.parse(DEFINITION_WITHOUT_BLOCKS)
-    res.blocks.should be_empty
-    res.items.size.should == 1
-    res.items[0].text.should == 'title'
-    res.items[0].examples[0].should == 'example1'
-    res.items[0].examples[1].should == 'example2'
+    res.blocks.size.should == 1
+    res.blocks[0].items.size.should == 1
+    res.blocks[0].items[0].text.should == 'title'
+    res.blocks[0].items[0].examples[0].should == 'example1'
+    res.blocks[0].items[0].examples[1].should == 'example2'
   end
 
   it "should return nil if can't parse the page" do
     res = @parser.parse(INVALID_INPUT)
     res.blocks.should be_empty
-    res.items.should be_empty
   end
 end

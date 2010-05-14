@@ -8,9 +8,13 @@ require_relative 'oald_parser/page_parser'
 #include OaldParser
 #
 #downloader = PageDownloader.new("http://www.oxfordadvancedlearnersdictionary.com/dictionary")
-#page = downloader.download("prevent")
+#page = downloader.download("a")
+##puts page
+#
 #parser = PageParser.new
 #parsed = parser.parse(page)
+#puts parsed.inspect
+#
 #formatter = Formatter.new(items: 15)
 #puts formatter.format(parsed)
 

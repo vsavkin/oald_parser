@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "oald_parser"
-  s.version     = '0.2.1'
+  s.version     = '0.2.2'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Victor Savkin"]
   s.email       = ["avix1000@gmail.com"]
