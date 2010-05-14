@@ -2,22 +2,38 @@ require 'nokogiri'
 
 module OaldParser
   class Formatter
-    def initialize(options)
-      @options = options
-    end
-
-    def format(content)
-      lined_content = content.gsub(/<\s*br\s*\/*>/, "\n")
-      text = Nokogiri::HTML(lined_content).text
-      first_lines = first_lines(text, @options[:lines])
-      first_lines.strip
-    rescue
-      nil  
+    def format(page)
+      format_blocks(page.blocks)
     end
 
     private
-    def first_lines(text, lines)
-      text.split("\n").first(lines).join("\n")
+    def format_blocks(blocks)
+      blocks.collect do |block|
+        res = ''
+        unless block.text.empty?
+          res += block.text.upcase
+          res += "\n"
+          res += '-' * 20
+          res += "\n"
+        end
+        res += format_items(block.items)
+        res
+      end.join("\n\n")
+    end
+
+    def format_items(items)
+      items.collect do |item|
+        res = item.text
+        unless item.examples.empty?
+          res += "\n"
+          res += format_examples(item.examples)
+        end
+        res
+      end.join("\n\n")
+    end
+
+    def format_examples(examples)
+      examples.collect{|e| "+ #{e}"}.join("\n")
     end
   end
 end
