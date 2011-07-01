@@ -19,7 +19,7 @@ It can be used this way:
     text = facade.describe(word: 'dog') OR
     text = facade.describe(str: 'a dog [CN]')
 
-The 'describe' method returns a plain text describing a word or a string. 
+The 'describe' method returns plain text describing a word or a string. 
 
 == Customizing
 
