@@ -6,6 +6,8 @@ require_relative 'word_extractor'
 
 module OaldParser
   class Facade
+    URL = 'http://www.oxfordadvancedlearnersdictionary.com/dictionary'
+
     def initialize(downloader, parser, formatter, extractor)
       @downloader = downloader
       @parser = parser
@@ -13,8 +15,8 @@ module OaldParser
       @extractor = extractor
     end
 
-    def self.create_facade
-      downloader = PageDownloader.new('http://www.oxfordadvancedlearnersdictionary.com/dictionary')
+    def self.create_configured_instance
+      downloader = PageDownloader.new(URL)
       parser = PageParser.new
       formatter = Formatter.new
       extractor = WordExtractor.new
@@ -23,6 +25,7 @@ module OaldParser
 
     def describe(args)
       word = get_word(args)
+      
       raise OaldParserException.new(OaldParserException::INTERNAL) unless word 
 
       page = @downloader.download(word)

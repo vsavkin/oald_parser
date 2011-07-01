@@ -1,19 +1,25 @@
 module OaldParser
   class WordExtractor
+    NOISE = /\Aa | a |\Aan | an |\Athe | the |\[.*\]|\(.*\)| adj | adj\z| adv | adv\z/i
+
     def extract(str)
-      res = remove_unused_words(str)
-      find_first_big_word(res)
+      res = remove_noise(str)
+      retrieve_first_long_word(res)
     end
 
     private
-    def remove_unused_words(str)
-       str.gsub(' ', '  ').
-       gsub(/\Aa | a |\Aan | an |\Athe | the |\[.*\]|\(.*\)| adj | adj\z| adv | adv\z/i, '')
+    def remove_noise(str)
+       str.gsub(' ', '  ').gsub(NOISE, '')
     end
 
-    def find_first_big_word(str)
-      parts = str.split(' ')
-      parts.size > 1 ? parts.find{|w| w.size > 2}  : str.strip
+    def retrieve_first_long_word(str)
+      words = str.split(' ')
+      word = words.size > 1 ?  find_first_long_word(words) : str
+      word.strip
+    end
+
+    def find_first_long_word(words)
+      words.find{|w| w.size > 2}
     end
   end
 end

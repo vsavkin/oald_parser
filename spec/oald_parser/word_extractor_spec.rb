@@ -1,5 +1,3 @@
-require "spec"
-
 require_relative '../../lib/oald_parser/word_extractor'
 include OaldParser
 

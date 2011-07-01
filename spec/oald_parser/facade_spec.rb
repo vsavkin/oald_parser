@@ -1,4 +1,3 @@
-require "spec"
 require_relative '../../lib/oald_parser/facade'
 
 include OaldParser
