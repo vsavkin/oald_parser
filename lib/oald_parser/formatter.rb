@@ -11,29 +11,27 @@ module OaldParser
       blocks.collect do |block|
         res = ''
         unless block.text.empty?
-          res += block.text.upcase
-          res += "\n"
-          res += '-' * 20
+          res += '##' + block.text
           res += "\n"
         end
         res += format_items(block.items)
         res
-      end.join("\n\n")
+      end.join("\n")
     end
 
     def format_items(items)
       items.collect do |item|
-        res = item.text
+        res = '###' + item.text
         unless item.examples.empty?
           res += "\n"
           res += format_examples(item.examples)
         end
         res
-      end.join("\n\n")
+      end.join("\n")
     end
 
     def format_examples(examples)
-      examples.collect{|e| "+ #{e}"}.join("\n")
+      examples.collect{|e| " * #{e}"}.join("\n")
     end
   end
 end
