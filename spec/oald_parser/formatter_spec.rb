@@ -11,7 +11,7 @@ describe OaldParser::Formatter do
 
   it "should format page with blocks and do stripping" do
     page = OpenStruct.new(blocks: [@block])
-    subject.format(page).should == "##block1\n###item1\n * one\n * two\n###item2\n * one"
+    subject.format(page).should == "block1\nitem1\n * one\n * two\nitem2\n * one"
   end
 
   it "should format empty page" do

@@ -11,7 +11,7 @@ module OaldParser
       blocks.collect do |block|
         res = ''
         unless block.text.empty?
-          res += '##' + block.text
+          res += block.text
           res += "\n"
         end
         res += format_items(block.items)
@@ -21,7 +21,7 @@ module OaldParser
 
     def format_items(items)
       items.collect do |item|
-        res = '###' + item.text
+        res = item.text
         unless item.examples.empty?
           res += "\n"
           res += format_examples(item.examples)
